@@ -80,7 +80,7 @@ const App: React.FC<IProps> = (props: IProps) => {
       <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} />
 
       <Stack.Navigator headerMode="none">
-        {isLoggedIn ? (
+        {true ? (
           <Stack.Screen
             name="Home"
             component={LoggedInNavigator}

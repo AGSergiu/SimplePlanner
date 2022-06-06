@@ -17,15 +17,17 @@ import {
 import Navigator from 'app/navigation';
 import configureStore from 'app/store';
 import { IThemeState } from 'app/models/reducers/theme';
+import { persistor, store } from './store/store';
 
-const { persistor, store } = configureStore();
+// const { persistor, store } = configureStore();
 
 interface IState {
   themeReducer: IThemeState;
 }
 
 const RootNavigation: React.FC = () => {
-  const isDark = useSelector((state: IState) => state.themeReducer.isDark);
+  // const isDark = useSelector((state: IState) => state.themeReducer.isDark);
+  const isDark = true
   const paperTheme = isDark ? PaperThemeDark : PaperThemeDefault;
   const combinedTheme = isDark ? CombinedDarkTheme : CombinedDefaultTheme;
 

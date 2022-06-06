@@ -19,10 +19,10 @@ const LoggedInStack = createStackNavigator();
 
 const homeOptions = {
   title: 'Home',
-  headerTitleStyle: {
-    fontWeight: 'bold',
-  },
-  headerRight: () => <ThemeController />,
+  // headerTitleStyle: {
+  //   fontWeight: 'bold',
+  // },
+  // headerRight: () => <ThemeController />,
 };
 
 interface IState {
@@ -33,7 +33,7 @@ interface IProps {
   theme: Theme;
 }
 
-const AuthNavigator = () => {
+/* const AuthNavigator = () => {
   const isLoggedIn = useSelector(
     (state: IState) => state.loginReducer.isLoggedIn,
   );
@@ -61,30 +61,30 @@ const AuthNavigator = () => {
       />
     </AuthStack.Navigator>
   );
-};
+}; */
 
 const LoggedInNavigator = () => (
-  <LoggedInStack.Navigator>
-    <Stack.Screen name="Home" component={Home} options={homeOptions} />
+  <LoggedInStack.Navigator screenOptions={{ headerShown: false }} >
+    <Stack.Screen name="Main Home" component={Home} /* options={homeOptions} */ />
   </LoggedInStack.Navigator>
 );
 
 const App: React.FC<IProps> = (props: IProps) => {
   const { theme } = props;
-  const isLoggedIn = useSelector(
-    (state: IState) => state.loginReducer.isLoggedIn,
-  );
+  // const isLoggedIn = useSelector(
+  //   (state: IState) => state.loginReducer.isLoggedIn,
+  // );
 
   return (
     <NavigationContainer ref={navigationRef} theme={theme}>
-      <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} />
+      {/* <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} /> */}
 
-      <Stack.Navigator headerMode="none">
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         {true ? (
           <Stack.Screen
             name="Home"
             component={LoggedInNavigator}
-            options={homeOptions}
+            // options={homeOptions}
           />
         ) : (
           <Stack.Screen

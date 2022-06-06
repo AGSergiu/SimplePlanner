@@ -12,7 +12,8 @@ interface IState {
 }
 
 const ThemeController: React.FC = () => {
-  const isDark = useSelector((state: IState) => state.themeReducer.isDark);
+  // const isDark = useSelector((state: IState) => state.themeReducer.isDark);
+  const isDark = true;
 
   const dispatch = useDispatch();
   const onToggleTheme = () => dispatch(themeActions.setIsDarkTheme(!isDark));

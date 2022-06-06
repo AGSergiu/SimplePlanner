@@ -1,7 +1,13 @@
+
 /*
  * combines all th existing reducers
  */
 import * as loadingReducer from './loadingReducer';
 import * as loginReducer from './loginReducer';
 import * as themeReducer from './themeReducer';
-export default Object.assign(loginReducer, loadingReducer, themeReducer);
+import * as calendarReducer from './calendarReducer';
+import * as todoReducer from './todoReducers'
+export default Object.assign(/* loginReducer */ loadingReducer,
+  themeReducer,
+  calendarReducer,
+  todoReducer);

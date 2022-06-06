@@ -1,14 +1,25 @@
+import Calendar from '../../components/Calendar'
 import React from 'react';
-import { View } from 'react-native';
-import { Title } from 'react-native-paper';
-
+import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import styles from './styles';
+import { TodoInput } from 'app/components/TodoInput';
+
+
 
 const Home: React.FC = () => {
   return (
-    <View style={styles.container}>
-      <Title>Hello {'Username'}</Title>
-    </View>
+    <>
+      <View style={styles.container}>
+        <Calendar />
+        {/* <TodoContainer /> */}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.container}
+        >
+          <TodoInput />
+        </KeyboardAvoidingView>
+      </View>
+    </>
   );
 };
 

@@ -20,7 +20,8 @@ export const TodoInput = () => {
   const [inputValue, setInputValue] = useState('')
   const [checkEnable, setCheckEnable] = useState(false)
 
-  const selectedDate = useSelector((state: IState) => state.calendarReducer.selectedDate)
+  // const selectedDate = useSelector((state: IState) => state.calendarReducer.selectedDate)
+  const selectedDate = new Date().toISOString()
   console.log("CheckThisSelectedDate", selectedDate)
 
   const handleHeadingSelect = (text: string) => {

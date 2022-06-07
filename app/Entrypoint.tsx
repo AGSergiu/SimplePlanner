@@ -27,7 +27,7 @@ interface IState {
 
 const RootNavigation: React.FC = () => {
   // const isDark = useSelector((state: IState) => state.themeReducer.isDark);
-  const isDark = true
+  const isDark = false
   const paperTheme = isDark ? PaperThemeDark : PaperThemeDefault;
   const combinedTheme = isDark ? CombinedDarkTheme : CombinedDefaultTheme;
 

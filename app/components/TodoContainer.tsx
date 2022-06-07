@@ -1,9 +1,10 @@
-import { RootState } from '@/Store'
+import { RootState } from 'app/store/store'
 import React from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { Surface, Text } from 'react-native-paper'
 import { useSelector } from 'react-redux'
 import { Todo } from './Todo'
+import LottieView from "lottie-react-native";
 
 
 function TodoContainer() {
@@ -12,9 +13,9 @@ function TodoContainer() {
   )
   const todoList = useSelector((state: RootState) => state.todo)?.filter(
     todo =>
-      new Date(todo.inputDate).toDateString() === selectedDate.toDateString(),
+      new Date(todo.timestamp).toDateString() === selectedDate.toDateString(),
   )
-
+  console.log("todoList", todoList)
   if (todoList?.length > 0) {
     return (
       <Surface style={styles.mainContainer}>
@@ -31,18 +32,26 @@ function TodoContainer() {
         <View
           style={{
             flex: 1,
-            alignContent: 'center',
-            alignItems: 'center',
-            justifyContent: 'center',
+            flexDirection: "column",
+            alignContent: 'space-between',
+            // alignItems: 'center',
           }}
         >
+          <LottieView
+            source={require('../assets/empty_todo.json')}
+            autoPlay
+            loop
+          />
           <Text
             style={{
-              fontSize: 24,
+              textAlignVertical: "bottom",
+              fontSize: 20,
+              paddingBottom: 16,
+              flex: 2,
               textAlign: 'center',
             }}
           >
-            What great plans do you have for today?
+            Plan your work and work your plan.
           </Text>
         </View>
       </Surface>
@@ -55,7 +64,7 @@ export default TodoContainer
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    marginBottom: 78,
+    marginBottom: 70,
   },
   todoContainer: {
     flex: 1,

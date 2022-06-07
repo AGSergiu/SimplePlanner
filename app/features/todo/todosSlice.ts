@@ -16,13 +16,13 @@ export const todosSlice = createSlice({
         payload: {
           id: Date.now().toString(),
           text: data.text,
-          isDone: data?.completed,
+          isDone: data?.isDone,
           timestamp: new Date().toISOString(),
         } as ITodoState,
       }),
     },
-    deleteTodo(state, action: PayloadAction<{ todoId: string }>) {
-      const index = state.findIndex(todo => todo.id === action.payload.todoId)
+    deleteTodo(state, action: PayloadAction<{ id: string }>) {
+      const index = state.findIndex(todo => todo.id === action.payload.id)
       if (index !== -1) {
         state.splice(index, 1)
       }
@@ -33,7 +33,8 @@ export const todosSlice = createSlice({
     ) {
       const todo = state.find(todo => todo.id === action.payload.id)
       //will happening only if is a checkbox todo
-      todo.isDone = !todo?.isDone
+      if (todo)
+        todo.isDone = !todo?.isDone
     },
   },
 })

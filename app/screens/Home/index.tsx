@@ -3,6 +3,7 @@ import React from 'react';
 import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import styles from './styles';
 import { TodoInput } from 'app/components/TodoInput';
+import TodoContainer from 'app/components/TodoContainer';
 
 
 
@@ -11,10 +12,10 @@ const Home: React.FC = () => {
     <>
       <View style={styles.container}>
         <Calendar />
-        {/* <TodoContainer /> */}
+        <TodoContainer />
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.container}
+          style={styles.keyboardStyle}
         >
           <TodoInput />
         </KeyboardAvoidingView>

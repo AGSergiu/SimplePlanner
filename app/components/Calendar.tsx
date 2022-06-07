@@ -1,37 +1,29 @@
 import DateTimePicker, {
   DateTimePickerEvent
 } from '@react-native-community/datetimepicker'
-import { IThemeState } from 'app/models/reducers/theme'
-import React, { useState } from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
-import CalendarStrip from 'react-native-calendar-strip'
-import { useDispatch, useSelector } from 'react-redux'
-import * as calendarActions from 'app/store/actions/calendarActions'
+import { setSelectedCalendarDate } from 'app/features/calendar/calendarSlice'
 import { Colors, FontSize } from 'app/Theme/Variables'
-import { ICalendarState } from 'app/models/reducers/calendar'
-import { ITodoState } from 'app/models/reducers/todo'
+import React, { useState } from 'react'
+import { Pressable, StyleSheet, Text, ToastAndroid, View } from 'react-native'
+import CalendarStrip from 'react-native-calendar-strip'
+import { useDispatch } from 'react-redux'
 
 type OwnProps = {
   selectedDate: Date
   onSelectedDate: (date: Date) => void
 }
 
-interface IState {
-  calendarReducer: ITodoState;
-}
-
-
 export default function Calendar() {
   const dispatch = useDispatch()
   const [selectedDate, setSelectedDate] = React.useState(new Date())
   const [showDatePicker, setShowDatePicker] = useState(false)
-  /* const todoDates: string[] = useSelector((state: RootState) => state.todo).map(
-    todo => toShortDate(todo.timestamp),
-  ) */
-
+  // const todoDates: string[] = useSelector((state: RootState) => state.todo).map(
+  //   todo => toShortDate(todo.timestamp),
+  // )
   const onSelectDate = (date: Date) => {
+    ToastAndroid.show("date: " + date, ToastAndroid.SHORT)
     setSelectedDate(date)
-    dispatch(calendarActions.setCalendarSelectedDate(date.toISOString()))
+    dispatch(setSelectedCalendarDate(new Date(date).toDateString()))
   }
 
   function handleToday() {
@@ -60,7 +52,7 @@ export default function Calendar() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{}}>
       <CalendarStrip
         scrollable
         daySelectionAnimation={{
@@ -77,8 +69,10 @@ export default function Calendar() {
         upperCaseDays
         // markedDates={markedDates}
         dayComponentHeight={65}
-        dayContainerStyle={{ borderRadius: 10 }}
-        onDateSelected={date => onSelectDate(date.toDate())}
+        dayContainerStyle={{ borderRadius: 10, }}
+        onDateSelected={date => {
+          onSelectDate(date.toDate())
+        }}
       />
 
       <View style={styles.todayContainer}>
@@ -107,7 +101,6 @@ const styles = StyleSheet.create({
   calendar: {
     height: 110,
     paddingTop: 10,
-
     backgroundColor: Colors.secondary,
   },
   calendarText: {

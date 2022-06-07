@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 // import { addTodo, TodoModel } from '@/features/todo/todoSlice'
+import { addTodo } from 'app/features/todo/todosSlice'
 import { ICalendarState } from 'app/models/reducers/calendar'
-import { addTodo } from 'app/store/actions/todoActions'
 import { Colors } from 'app/Theme/Variables'
 import React, { useState } from 'react'
 import { StyleSheet, TextInput, View } from 'react-native'
@@ -18,8 +18,8 @@ export const TodoInput = () => {
   const dispatch = useDispatch()
 
   const [inputValue, setInputValue] = useState('')
-  const [checkEnable, setCheckEnable] = useState(false)
-
+  const [checkEnable, setCheckEnable] = useState<undefined | boolean>(false)
+  console.log("CheckCheck,", checkEnable)
   // const selectedDate = useSelector((state: IState) => state.calendarReducer.selectedDate)
   const selectedDate = new Date().toISOString()
   console.log("CheckThisSelectedDate", selectedDate)
@@ -47,11 +47,11 @@ export const TodoInput = () => {
   return (
     <View style={styles.container}>
       <View style={styles.options}>
-        <IconButton
+        {/* <IconButton
           animated
           onPress={() => setCheckEnable(!checkEnable)}
           icon={checkEnable ? 'sticker-check' : 'sticker-check-outline'}
-        />
+        /> */}
         {/* <EmphasisMenu
           onEmphasisSelect={emphasisType => handleEmphasisSelect(emphasisType)}
         />
@@ -71,6 +71,12 @@ export const TodoInput = () => {
           justifyContent: 'center',
         }}
       >
+        <IconButton
+          animated
+          onPress={() => setCheckEnable(!checkEnable)}
+          icon={checkEnable ? 'sticker-check' : 'sticker-check-outline'}
+        />
+
         <TextInput
           placeholder={'What is your plan today?'}
           placeholderTextColor={theme.colors.placeholder}
@@ -136,7 +142,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 12,
     maxHeight: 76,
-    paddingLeft: 16,
   },
   layout: {
     flex: 1,

@@ -6,6 +6,7 @@ export interface ITodoState {
   id: string;
   text: string;
   timestamp: string;
+  addedOn: string,
   isDone?: boolean;
 }
 

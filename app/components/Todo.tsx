@@ -1,25 +1,32 @@
+import { toggleTodo } from 'app/features/todo/todosSlice'
+import { ITodoState } from 'app/models/reducers/todo'
+import { Colors, FontSize } from 'app/Theme/Variables'
 import React from 'react'
 import { StyleSheet } from 'react-native'
+import { Divider, Text } from 'react-native-paper'
+import Animated, {
+  Easing,
+  FadeInDown,
+  Layout
+} from 'react-native-reanimated'
 import { useDispatch } from 'react-redux'
-import { Divider, Surface, Text } from 'react-native-paper'
-import { ITodoState } from 'app/models/reducers/todo'
-import { toggleTodo } from 'app/features/todo/todosSlice'
 import DeleteWrapper from './DeleteWrap/DeleteWrapper'
 import TodoCheckbox from './ICheckBox/Checkbox'
-import { Colors, FontSize } from 'app/Theme/Variables'
 
 type OwnProps = {
-  todo: ITodoState
+  todo: ITodoState,
+  index: number
 }
 
-export const Todo = ({ todo }: OwnProps) => {
+export const Todo = ({ todo, index }: OwnProps) => {
   const dispatch = useDispatch()
-
   const handleToggle = () => {
     dispatch(toggleTodo({ id: todo.id }))
   }
   return (
-    <Surface style={styles.container}>
+    <Animated.View entering={FadeInDown}
+      layout={Layout.easing(Easing.bounce).delay(index * 100)}
+    >
       {todo.isDone === false || todo.isDone === true ? (
         <DeleteWrapper todoId={todo.id}>
           <TodoCheckbox todo={todo} onToggle={handleToggle} />
@@ -30,7 +37,7 @@ export const Todo = ({ todo }: OwnProps) => {
           </DeleteWrapper>
       )}
       <Divider />
-    </Surface>
+    </Animated.View>
   )
 }
 

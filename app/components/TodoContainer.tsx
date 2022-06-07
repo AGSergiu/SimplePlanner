@@ -1,10 +1,11 @@
 import { RootState } from 'app/store/store'
 import React from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { KeyboardAvoidingView, ScrollView, StyleSheet } from 'react-native'
 import { Surface, Text } from 'react-native-paper'
 import { useSelector } from 'react-redux'
 import { Todo } from './Todo'
-import LottieView from "lottie-react-native";
+import EmptyState from './EmptyState/EmptyState'
+import { getRandomQuote } from 'app/utils/utils'
 
 
 function TodoContainer() {
@@ -13,15 +14,14 @@ function TodoContainer() {
   )
   const todoList = useSelector((state: RootState) => state.todo)?.filter(
     todo =>
-      new Date(todo.timestamp).toDateString() === selectedDate.toDateString(),
+      new Date(todo.addedOn).toDateString() === selectedDate.toDateString(),
   )
-  console.log("todoList", todoList)
   if (todoList?.length > 0) {
     return (
       <Surface style={styles.mainContainer}>
         <ScrollView style={styles.scrollView}>
-          {todoList?.map(todo => {
-            return <Todo key={todo.id} todo={todo} />
+          {todoList?.map((todo, index) => {
+            return <Todo key={todo.id} todo={todo} index={index} />
           })}
         </ScrollView>
       </Surface>
@@ -29,31 +29,21 @@ function TodoContainer() {
   } else {
     return (
       <Surface style={styles.mainContainer}>
-        <View
+        <Text
+          adjustsFontSizeToFit
           style={{
             flex: 1,
-            flexDirection: "column",
-            alignContent: 'space-between',
-            // alignItems: 'center',
+            fontSize: 20,
+            marginTop: 16,
+            textAlign: 'center',
+
           }}
         >
-          <LottieView
-            source={require('../assets/empty_todo.json')}
-            autoPlay
-            loop
-          />
-          <Text
-            style={{
-              textAlignVertical: "bottom",
-              fontSize: 20,
-              paddingBottom: 16,
-              flex: 2,
-              textAlign: 'center',
-            }}
-          >
-            Plan your work and work your plan.
-          </Text>
-        </View>
+          {getRandomQuote()?.text}
+        </Text>
+        <EmptyState />
+
+
       </Surface>
     )
   }
@@ -64,11 +54,11 @@ export default TodoContainer
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    marginBottom: 70,
+    paddingBottom: 65,
+
   },
   todoContainer: {
     flex: 1,
-    /* paddingLeft: 55, */
   },
   scrollView: {
     flex: 1,

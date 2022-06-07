@@ -2,6 +2,7 @@
 // import { addTodo, TodoModel } from '@/features/todo/todoSlice'
 import { addTodo } from 'app/features/todo/todosSlice'
 import { ICalendarState } from 'app/models/reducers/calendar'
+import { RootState } from 'app/store/store'
 import { Colors } from 'app/Theme/Variables'
 import React, { useState } from 'react'
 import { StyleSheet, TextInput, View } from 'react-native'
@@ -19,11 +20,9 @@ export const TodoInput = () => {
 
   const [inputValue, setInputValue] = useState('')
   const [checkEnable, setCheckEnable] = useState<undefined | boolean>(false)
-  console.log("CheckCheck,", checkEnable)
-  // const selectedDate = useSelector((state: IState) => state.calendarReducer.selectedDate)
-  const selectedDate = new Date().toISOString()
-  console.log("CheckThisSelectedDate", selectedDate)
-
+  const selectedDate = useSelector(
+    (state: RootState) => new Date(state.calendar.selectedDate),
+  )
   const handleHeadingSelect = (text: string) => {
     setInputValue(inputValue.concat(text))
   }
@@ -37,7 +36,7 @@ export const TodoInput = () => {
     if (inputValue.length > 1) {
       dispatch(
         addTodo({
-          text: inputValue, isDone: checkEnable ? false : undefined,
+          text: inputValue, isDone: checkEnable ? false : undefined, addedOn: selectedDate.toDateString()
         }),
       )
     }

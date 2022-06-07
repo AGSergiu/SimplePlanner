@@ -2,11 +2,13 @@ import DateTimePicker, {
   DateTimePickerEvent
 } from '@react-native-community/datetimepicker'
 import { setSelectedCalendarDate } from 'app/features/calendar/calendarSlice'
+import { RootState } from 'app/store/store'
 import { Colors, FontSize } from 'app/Theme/Variables'
+import { toShortDate } from 'app/utils/utils'
 import React, { useState } from 'react'
-import { Pressable, StyleSheet, Text, ToastAndroid, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import CalendarStrip from 'react-native-calendar-strip'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 type OwnProps = {
   selectedDate: Date
@@ -17,11 +19,13 @@ export default function Calendar() {
   const dispatch = useDispatch()
   const [selectedDate, setSelectedDate] = React.useState(new Date())
   const [showDatePicker, setShowDatePicker] = useState(false)
-  // const todoDates: string[] = useSelector((state: RootState) => state.todo).map(
-  //   todo => toShortDate(todo.timestamp),
-  // )
+  const todoDates: string[] = useSelector((state: RootState) => state.todo).map(
+    todo => {
+
+      return toShortDate(todo.addedOn)
+    },
+  )
   const onSelectDate = (date: Date) => {
-    ToastAndroid.show("date: " + date, ToastAndroid.SHORT)
     setSelectedDate(date)
     dispatch(setSelectedCalendarDate(new Date(date).toDateString()))
   }
@@ -34,12 +38,8 @@ export default function Calendar() {
     setShowDatePicker(true)
   }
 
-  // function onlyUnique(value, index, self) {
-  //   return self.indexOf(value) === index
-  // }
-
-  // let markedDates: { date: string; dots: { color: string }[] }[] =
-  //   getMarkedDates(todoDates, onlyUnique)
+  let markedDates: { date: string; dots: { color: string }[] }[] =
+    getMarkedDates(todoDates, [...new Set(todoDates)])
 
   const handleDatePicker = (
     _event: DateTimePickerEvent,
@@ -67,7 +67,7 @@ export default function Calendar() {
         dateNameStyle={styles.calendarText}
         selectedDate={selectedDate}
         upperCaseDays
-        // markedDates={markedDates}
+        markedDates={markedDates}
         dayComponentHeight={65}
         dayContainerStyle={{ borderRadius: 10, }}
         onDateSelected={date => {
@@ -126,15 +126,16 @@ const styles = StyleSheet.create({
 
 function getMarkedDates(
   todoDates: string[],
-  onlyUnique: (value: any, index: any, self: any) => boolean,
+  onlyUnique: string[],
 ) {
-  const todoDateUnique = todoDates.filter(onlyUnique)
+  // const uniqDates2 = [...new Set[todoDates]]
+  // const todoDateUnique = todoDates.filter(onlyUnique)
 
   let markedDates: { date: string; dots: { color: string }[] }[] = []
-  console.log(todoDateUnique)
+  // console.log(todoDateUnique)
 
-  if (todoDateUnique) {
-    todoDateUnique.map(todoDate => {
+  if (onlyUnique) {
+    onlyUnique.map(todoDate => {
       let todoMark = {
         date: todoDate,
         dots: [{ color: '#3F51B5' }],

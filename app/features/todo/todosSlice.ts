@@ -16,8 +16,8 @@ export const todosSlice = createSlice({
         payload: {
           id: Date.now().toString(),
           text: data.text,
+          addedOn: data?.addedOn,
           isDone: data?.isDone,
-          timestamp: new Date().toISOString(),
         } as ITodoState,
       }),
     },

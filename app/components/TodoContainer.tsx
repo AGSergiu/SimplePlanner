@@ -1,11 +1,12 @@
 import { RootState } from 'app/store/store'
 import React from 'react'
-import { KeyboardAvoidingView, ScrollView, StyleSheet } from 'react-native'
+import { FlatList, KeyboardAvoidingView, ScrollView, StyleSheet } from 'react-native'
 import { Surface, Text } from 'react-native-paper'
 import { useSelector } from 'react-redux'
 import { Todo } from './Todo'
 import EmptyState from './EmptyState/EmptyState'
 import { getRandomQuote } from 'app/utils/utils'
+import { ITodoState } from 'app/models/reducers/todo'
 
 
 function TodoContainer() {
@@ -16,14 +17,19 @@ function TodoContainer() {
     todo =>
       new Date(todo.addedOn).toDateString() === selectedDate.toDateString(),
   )
+
+  const renderItem = ({ item, index }: { item: ITodoState, index: number }) => {
+    return (<Todo key={item.id} todo={item} index={index} />)
+  }
+
   if (todoList?.length > 0) {
     return (
       <Surface style={styles.mainContainer}>
-        <ScrollView style={styles.scrollView}>
-          {todoList?.map((todo, index) => {
-            return <Todo key={todo.id} todo={todo} index={index} />
-          })}
-        </ScrollView>
+        <FlatList
+          data={todoList}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
       </Surface>
     )
   } else {

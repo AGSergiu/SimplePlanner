@@ -9,7 +9,8 @@ const TodoCheckbox: React.FC<CheckBoxProps> = ({
   onToggle,
   ...props
 }) => {
-  const [isCheck, setIsCheck] = React.useState(todo.completed!)
+  const [isCheck, setIsCheck] = React.useState(todo.completed)
+
   React.useEffect(() => {
     onToggle(isCheck)
   }, [isCheck])
@@ -28,7 +29,6 @@ const TodoCheckbox: React.FC<CheckBoxProps> = ({
         status={isCheck ? 'checked' : 'unchecked'}
         onPress={() => {
           setIsCheck(!isCheck)
-          // onToggle(isCheck)
         }}
       />
       <Text style={{ fontSize: FontSize.regular, }}>{todo.text}</Text>

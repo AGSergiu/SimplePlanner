@@ -36,7 +36,7 @@ export const TodoInput = () => {
     if (inputValue.length > 1) {
       dispatch(
         addTodo({
-          text: inputValue, isDone: checkEnable ? false : undefined, addedOn: selectedDate.toDateString()
+          text: inputValue.trim(), isDone: checkEnable ? false : undefined, addedOn: selectedDate.toDateString()
         }),
       )
     }

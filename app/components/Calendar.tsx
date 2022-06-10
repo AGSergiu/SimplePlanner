@@ -5,6 +5,7 @@ import { setSelectedCalendarDate } from 'app/features/calendar/calendarSlice'
 import { RootState } from 'app/store/store'
 import { Colors, FontSize } from 'app/Theme/Variables'
 import { toShortDate } from 'app/utils/utils'
+import moment from 'moment'
 import React, { useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import CalendarStrip from 'react-native-calendar-strip'
@@ -17,21 +18,21 @@ type OwnProps = {
 
 export default function Calendar() {
   const dispatch = useDispatch()
-  const [selectedDate, setSelectedDate] = React.useState(new Date())
+  const [selectedDate, setSelectedDate] = React.useState<moment.Moment>(moment())
   const [showDatePicker, setShowDatePicker] = useState(false)
   const todoDates: string[] = useSelector((state: RootState) => state.todo).map(
     todo => {
-
-      return toShortDate(todo.addedOn)
+      console.log("addedOn", todo.addedOn)
+      return todo.addedOn
     },
   )
-  const onSelectDate = (date: Date) => {
+  const onSelectDate = (date: moment.Moment) => {
     setSelectedDate(date)
-    dispatch(setSelectedCalendarDate(new Date(date).toDateString()))
+    dispatch(setSelectedCalendarDate(date.toJSON()))
   }
 
   function handleToday() {
-    onSelectDate(new Date())
+    onSelectDate(moment())
   }
 
   const onHeaderSelected = () => {
@@ -39,15 +40,12 @@ export default function Calendar() {
   }
 
   let markedDates: { date: string; dots: { color: string }[] }[] =
-    getMarkedDates(todoDates, [...new Set(todoDates)])
+    getMarkedDates([...new Set(todoDates)])
 
-  const handleDatePicker = (
-    _event: DateTimePickerEvent,
-    selectedDate: Date | undefined,
-  ) => {
+  const handleDatePicker = (selectedDate: Date | undefined) => {
     setShowDatePicker(false)
     if (selectedDate) {
-      onSelectDate(selectedDate)
+      onSelectDate(moment(selectedDate))
     }
   }
 
@@ -71,7 +69,7 @@ export default function Calendar() {
         dayComponentHeight={65}
         dayContainerStyle={{ borderRadius: 10, }}
         onDateSelected={date => {
-          onSelectDate(date.toDate())
+          onSelectDate(date)
         }}
       />
 
@@ -84,13 +82,13 @@ export default function Calendar() {
       {showDatePicker && (
         <DateTimePicker
           testID="dateTimePicker"
-          value={selectedDate}
+          value={selectedDate.toDate()}
           mode={'date'}
           display={'default'}
           style={{ backgroundColor: Colors.primary }}
           is24Hour={true}
           textColor={Colors.primary}
-          onChange={handleDatePicker}
+          onChange={(_event, date) => { handleDatePicker(date) }}
         />
       )}
     </View>
@@ -124,15 +122,10 @@ const styles = StyleSheet.create({
   },
 })
 
-function getMarkedDates(
-  todoDates: string[],
-  onlyUnique: string[],
-) {
-  // const uniqDates2 = [...new Set[todoDates]]
-  // const todoDateUnique = todoDates.filter(onlyUnique)
+function getMarkedDates(onlyUnique: string[]) {
 
   let markedDates: { date: string; dots: { color: string }[] }[] = []
-  // console.log(todoDateUnique)
+  console.log("addedOn", onlyUnique)
 
   if (onlyUnique) {
     onlyUnique.map(todoDate => {

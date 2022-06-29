@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ITodoState } from 'app/models/reducers/todo';
+import moment from "moment";
 
 
 const initialState = [] as ITodoState[]
@@ -36,9 +37,16 @@ export const todosSlice = createSlice({
       if (todo)
         todo.isDone = !todo?.isDone
     },
+    moveOnToday(
+      state,
+      action: PayloadAction<{ id: string }>,
+    ) {
+      const todo = state.find(todo => todo.id === action.payload.id)
+      if (todo) todo.addedOn = moment().toJSON()
+    }
   },
 })
 
-export const { addTodo, deleteTodo, toggleTodo } = todosSlice.actions
+export const { addTodo, deleteTodo, toggleTodo, moveOnToday } = todosSlice.actions
 
 export default todosSlice.reducer

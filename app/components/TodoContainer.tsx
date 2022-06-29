@@ -1,22 +1,38 @@
 import { RootState } from 'app/store/store'
 import React from 'react'
-import { FlatList, KeyboardAvoidingView, ScrollView, StyleSheet } from 'react-native'
-import { Surface, Text } from 'react-native-paper'
-import { useSelector } from 'react-redux'
+import { FlatList, KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native'
+import { Button, Surface, Text } from 'react-native-paper'
+import { useDispatch, useSelector } from 'react-redux'
 import { Todo } from './Todo'
 import EmptyState from './EmptyState/EmptyState'
 import { getRandomQuote } from 'app/utils/utils'
 import { ITodoState } from 'app/models/reducers/todo'
+import Typography from './Typographic/Typography'
+import { moveOnToday } from 'app/features/todo/todosSlice'
+import moment from 'moment'
 
 
 function TodoContainer() {
+  const dispatch = useDispatch()
   const selectedDate = useSelector(
-    (state: RootState) => new Date(state.calendar.selectedDate),
+    (state: RootState) => moment(state.calendar.selectedDate),
   )
   const todoList = useSelector((state: RootState) => state.todo)?.filter(
     todo =>
-      new Date(todo.addedOn).toDateString() === selectedDate.toDateString(),
+      moment(todo.addedOn).isSame(selectedDate, 'day'),
   )
+
+  const notDoneTasks = todoList.filter((todo) => todo.isDone === false)
+
+  const moveTasksToToday = () => {
+    todoList.map(todo => dispatch(moveOnToday({ id: todo.id })))
+  }
+
+  const renderMoveButton = () => {
+    if (notDoneTasks.length > 0 && selectedDate.isBefore(moment(), 'day')) {
+      return (<Button mode='outlined' onPress={moveTasksToToday}>Move {notDoneTasks.length} unfinished tasks on Today</Button>)
+    };
+  }
 
   const renderItem = ({ item, index }: { item: ITodoState, index: number }) => {
     return (<Todo key={item.id} todo={item} index={index} />)
@@ -30,25 +46,18 @@ function TodoContainer() {
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
         />
+        <View style={{ alignItems: "center", justifyContent: "center", width: "100%" }}>
+          {renderMoveButton()}
+        </View>
       </Surface>
     )
   } else {
     return (
       <Surface style={styles.mainContainer}>
-        <Text
-          adjustsFontSizeToFit
-          style={{
-            flex: 1,
-            fontSize: 20,
-            marginTop: 16,
-            textAlign: 'center',
-
-          }}
-        >
+        <Typography style={{ marginTop: 16, textAlign: 'center', }} variant={'regular'}>
           {getRandomQuote()?.text}
-        </Text>
+        </Typography>
         <EmptyState />
-
 
       </Surface>
     )
@@ -74,3 +83,5 @@ const styles = StyleSheet.create({
     width: 0.5,
   },
 })
+
+

@@ -3,6 +3,7 @@ import React from 'react'
 import { CheckBoxProps } from './types'
 import { View } from 'react-native'
 import { FontSize } from 'app/Theme/Variables'
+import Typography from '../Typographic/Typography'
 
 const TodoCheckbox: React.FC<CheckBoxProps> = ({
   todo,
@@ -31,7 +32,10 @@ const TodoCheckbox: React.FC<CheckBoxProps> = ({
           setIsCheck(!isCheck)
         }}
       />
-      <Text style={{ fontSize: FontSize.regular, }}>{todo.text}</Text>
+      {isCheck ? (
+        <Typography variant='todoGrey'>{todo.text}</Typography>
+      ) : (<Typography variant='todo'>{todo.text}</Typography>)
+      }
       {/* <MarkdownDisplay text={todo.text} /> */}
     </View>
   )

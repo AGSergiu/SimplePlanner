@@ -1,6 +1,6 @@
-import { TodoModel } from '@/features/todo/todoSlice'
+import { ITodoState } from './../../models/reducers/todo';
 
 export interface CheckBoxProps {
-  todo: TodoModel
+  todo: ITodoState
   onToggle: (isCompleted: boolean) => void
 }

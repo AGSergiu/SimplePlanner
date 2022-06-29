@@ -12,6 +12,7 @@ import Animated, {
 import { useDispatch } from 'react-redux'
 import DeleteWrapper from './DeleteWrap/DeleteWrapper'
 import TodoCheckbox from './ICheckBox/Checkbox'
+import Typography from './Typographic/Typography'
 
 type OwnProps = {
   todo: ITodoState,
@@ -33,10 +34,10 @@ export const Todo = ({ todo, index }: OwnProps) => {
         </DeleteWrapper>
       ) : (
           <DeleteWrapper todoId={todo.id}>
-            <Text style={{ marginLeft: 8, fontSize: FontSize.regular, }}>{todo.text}</Text>
+            <Typography variant='todo' style={{ marginLeft: 8 }}>{todo.text}</Typography>
           </DeleteWrapper>
       )}
-      <Divider />
+      {/* <Divider /> */}
     </Animated.View>
   )
 }

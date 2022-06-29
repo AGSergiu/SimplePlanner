@@ -56,7 +56,7 @@ export default function Calendar() {
         daySelectionAnimation={{
           type: 'background',
           duration: 30,
-          highlightColor: Colors.primary,
+          highlightColor: Colors.white,
         }}
         style={styles.calendar}
         calendarHeaderStyle={styles.calendarDate}
@@ -66,8 +66,8 @@ export default function Calendar() {
         selectedDate={selectedDate}
         upperCaseDays
         markedDates={markedDates}
-        dayComponentHeight={65}
-        dayContainerStyle={{ borderRadius: 10, }}
+        dayComponentHeight={70}
+        dayContainerStyle={{ borderTopLeftRadius: 10, borderTopRightRadius: 10, borderRadius: 0, width: "110%" }}
         onDateSelected={date => {
           onSelectDate(date)
         }}
